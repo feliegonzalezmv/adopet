@@ -1,11 +1,11 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import React from 'react';
-import {Text} from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import COLORS from '../../const/colors';
 import CustomDrawerContent from './DrawerContentScrollView';
 import DrawerScreenContainer from './DrawerScreenContainer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Logout} from '../../components';
 
 const Drawer = createDrawerNavigator();
 
@@ -87,7 +87,7 @@ const DrawerNavigator = () => {
             />
           ),
         }}>
-        {props => <Text>Log Out</Text>}
+        {props => <Logout />}
       </Drawer.Screen>
     </Drawer.Navigator>
   );

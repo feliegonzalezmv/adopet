@@ -4,10 +4,11 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import {View, Image, Text} from 'react-native';
-import {auth} from '../../../firebase';
 import COLORS from '../../const/colors';
+import {useAuth} from '../../context';
 
 const CustomDrawerContent = props => {
+  const {user} = useAuth();
   return (
     <DrawerContentScrollView
       style={{
@@ -29,7 +30,7 @@ const CustomDrawerContent = props => {
             fontSize: 13,
             marginTop: 10,
           }}>
-          {auth.currentUser.email}
+          {user?.email}
         </Text>
       </View>
 

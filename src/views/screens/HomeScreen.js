@@ -14,7 +14,7 @@ import {
 import COLORS from '../../const/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import pets from '../../const/pets';
-import {auth} from '../../../firebase';
+import {useAuth} from '../../context';
 const {height} = Dimensions.get('window');
 const petCategories = [
   {name: 'CATS', icon: 'cat'},
@@ -74,6 +74,7 @@ const Card = ({pet, navigation}) => {
 };
 
 const HomeScreen = ({navigation}) => {
+  const {user} = useAuth();
   const [selectedCategoryIndex, setSeletedCategoryIndex] = React.useState(0);
   const [filteredPets, setFilteredPets] = React.useState([]);
 
@@ -93,7 +94,7 @@ const HomeScreen = ({navigation}) => {
       <View style={style.header}>
         <Icon name="sort-variant" size={28} onPress={navigation.toggleDrawer} />
         <Text style={{color: COLORS.primary, fontWeight: 'bold', fontSize: 16}}>
-          {auth.currentUser.email}
+          {user?.email}
         </Text>
         <Image
           source={require('../../assets/person.jpg')}

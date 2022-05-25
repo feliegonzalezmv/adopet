@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,16 +7,15 @@ import {
   Platform,
   StyleSheet,
   StatusBar,
-  Alert,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import Feather from 'react-native-vector-icons/Feather';
 import COLORS from '../../const/colors';
-import {auth} from '../../../firebase';
-import {useNavigation} from '@react-navigation/core';
+import {useAuth} from '../../context';
 
 const LoginScreen = () => {
+  const {loginWithEmail, signUpWithEmail} = useAuth();
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -25,18 +24,6 @@ const LoginScreen = () => {
     isValidUser: false,
     isValidPassword: false,
   });
-
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        navigation.replace('HomeScreen');
-      }
-    });
-
-    return unsubscribe;
-  }, [navigation]);
 
   const textInputChange = val => {
     if (validateEmail(val)) {
@@ -95,31 +82,12 @@ const LoginScreen = () => {
 
   const handleSignUp = async () => {
     const {email, password} = data;
-    try {
-      const userCredentials = await auth.createUserWithEmailAndPassword(
-        email,
-        password,
-      );
-      const user = userCredentials.user;
-      console.log('Register with user', user);
-    } catch (error) {
-      console.log('error', error);
-    }
+    signUpWithEmail({email, password});
   };
 
   const handleLogin = async () => {
     const {email, password} = data;
-
-    try {
-      const userCredentials = await auth.signInWithEmailAndPassword(
-        email,
-        password,
-      );
-      const user = userCredentials.user;
-      console.log('Logged with user', user);
-    } catch (error) {
-      console.log('error', error);
-    }
+    loginWithEmail({email, password});
   };
 
   const validateEmail = email => {
