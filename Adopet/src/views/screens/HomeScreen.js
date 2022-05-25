@@ -14,6 +14,7 @@ import {
 import COLORS from '../../const/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import pets from '../../const/pets';
+import {auth} from '../../../firebase';
 const {height} = Dimensions.get('window');
 const petCategories = [
   {name: 'CATS', icon: 'cat'},
@@ -92,7 +93,7 @@ const HomeScreen = ({navigation}) => {
       <View style={style.header}>
         <Icon name="sort-variant" size={28} onPress={navigation.toggleDrawer} />
         <Text style={{color: COLORS.primary, fontWeight: 'bold', fontSize: 16}}>
-          JANE GARY
+          {auth.currentUser.email}
         </Text>
         <Image
           source={require('../../assets/person.jpg')}

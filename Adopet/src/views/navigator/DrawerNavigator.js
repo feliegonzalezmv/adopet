@@ -1,5 +1,6 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import React from 'react';
+import {Text} from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import COLORS from '../../const/colors';
 import CustomDrawerContent from './DrawerContentScrollView';
@@ -74,6 +75,19 @@ const DrawerNavigator = () => {
             <HomeScreen {...props} />
           </DrawerScreenContainer>
         )}
+      </Drawer.Screen>
+      <Drawer.Screen
+        name="LOG OUT"
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon
+              name="LogoutSharp"
+              size={25}
+              style={{marginRight: -20, color}}
+            />
+          ),
+        }}>
+        {props => <Text>Log Out</Text>}
       </Drawer.Screen>
     </Drawer.Navigator>
   );

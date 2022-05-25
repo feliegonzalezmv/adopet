@@ -4,6 +4,7 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import {View, Image, Text} from 'react-native';
+import {auth} from '../../../firebase';
 import COLORS from '../../const/colors';
 
 const CustomDrawerContent = props => {
@@ -28,7 +29,7 @@ const CustomDrawerContent = props => {
             fontSize: 13,
             marginTop: 10,
           }}>
-          MARY JANE
+          {auth.currentUser.email}
         </Text>
       </View>
 
