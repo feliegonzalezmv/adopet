@@ -18,10 +18,10 @@ import {useAuth} from '../../context';
 import {usePets} from '../../context/PetsContext/usePets';
 const {height} = Dimensions.get('window');
 const petCategories = [
-  {name: 'CATS', icon: 'cat'},
-  {name: 'DOGS', icon: 'dog'},
-  {name: 'BIRDS', icon: 'ladybug'},
-  {name: 'BUNNIES', icon: 'rabbit'},
+  {name: 'CAT', icon: 'cat'},
+  {name: 'DOG', icon: 'dog'},
+  {name: 'BIRD', icon: 'ladybug'},
+  {name: 'BUNNY', icon: 'rabbit'},
 ];
 
 const Card = ({pet, navigation}) => {
@@ -78,17 +78,20 @@ const HomeScreen = ({navigation}) => {
   const {user} = useAuth();
   const [selectedCategoryIndex, setSeletedCategoryIndex] = React.useState(0);
   const [filteredPets, setFilteredPets] = React.useState([]);
-  const {getPets} = usePets();
+  const {getPets, pets, loader} = usePets();
 
-  const fliterPet = index => {
+  const fliterPet = category => {
+    console.log('category', category);
     const currentPets = pets.filter(
-      item => item?.pet?.toUpperCase() == petCategories[index].name,
-    )[0]?.pets;
+      pet => pet.specie.toUpperCase() === category,
+    );
     setFilteredPets(currentPets);
+
+    console.log('currentPets', currentPets);
   };
 
   React.useEffect(() => {
-    fliterPet(0);
+    fliterPet(petCategories[0].name);
     getPets();
   }, []);
 
@@ -129,7 +132,7 @@ const HomeScreen = ({navigation}) => {
                 <TouchableOpacity
                   onPress={() => {
                     setSeletedCategoryIndex(index);
-                    fliterPet(index);
+                    fliterPet(item.name);
                   }}
                   style={[
                     style.categoryBtn,
