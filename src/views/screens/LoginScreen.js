@@ -96,6 +96,8 @@ const LoginScreen = () => {
     );
   };
 
+  console.log('data', data);
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
@@ -140,7 +142,7 @@ const LoginScreen = () => {
             </Animatable.View>
           ) : null}
         </View>
-        {data.isValidUser ? null : (
+        {!data.isValidUser && !!data.email && (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>Email must be a valid email</Text>
           </Animatable.View>
@@ -179,7 +181,7 @@ const LoginScreen = () => {
             )}
           </TouchableOpacity>
         </View>
-        {data.isValidPassword ? null : (
+        {!data.isValidPassword && !!data.password && (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>
               Password must be 8 characters long.
