@@ -22,10 +22,14 @@ export const AuthProvider = ({children}) => {
   }, [onAuthStateChanged]);
 
   const loginWithEmail = ({email, password}) => {
-    auth().signInWithEmailAndPassword(email, password);
+    setInitializing(true);
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .finally(() => setInitializing(false));
   };
 
   const signUpWithEmail = ({email, password}) => {
+    setInitializing(true);
     auth()
       .createUserWithEmailAndPassword(email, password)
       .then(({user: newUserData}) => {
@@ -40,7 +44,8 @@ export const AuthProvider = ({children}) => {
         }
 
         console.error(error);
-      });
+      })
+      .finally(() => setInitializing(false));
   };
 
   const signOut = () => auth().signOut();
