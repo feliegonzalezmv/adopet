@@ -15,6 +15,7 @@ import COLORS from '../../const/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import pets from '../../const/pets';
 import {useAuth} from '../../context';
+import {usePets} from '../../context/PetsContext/usePets';
 const {height} = Dimensions.get('window');
 const petCategories = [
   {name: 'CATS', icon: 'cat'},
@@ -77,6 +78,7 @@ const HomeScreen = ({navigation}) => {
   const {user} = useAuth();
   const [selectedCategoryIndex, setSeletedCategoryIndex] = React.useState(0);
   const [filteredPets, setFilteredPets] = React.useState([]);
+  const {getPets} = usePets();
 
   const fliterPet = index => {
     const currentPets = pets.filter(
@@ -87,6 +89,7 @@ const HomeScreen = ({navigation}) => {
 
   React.useEffect(() => {
     fliterPet(0);
+    getPets();
   }, []);
 
   return (
