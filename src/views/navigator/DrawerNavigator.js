@@ -80,11 +80,7 @@ const DrawerNavigator = () => {
         name="LOG OUT"
         options={{
           drawerIcon: ({color}) => (
-            <Icon
-              name="LogoutSharp"
-              size={25}
-              style={{marginRight: -20, color}}
-            />
+            <Icon name="logout" size={25} style={{marginRight: -20, color}} />
           ),
         }}>
         {props => <Logout />}
