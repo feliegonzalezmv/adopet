@@ -96,8 +96,6 @@ const LoginScreen = () => {
     );
   };
 
-  console.log('data', data);
-
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />

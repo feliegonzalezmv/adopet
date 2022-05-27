@@ -5,10 +5,10 @@ import {PetsProvider} from './PetsContext';
 
 export const Context = ({children}) => {
   return (
-    <AuthProvider>
-      <PetsProvider>
-        <NativeBaseProvider>{children}</NativeBaseProvider>
-      </PetsProvider>
-    </AuthProvider>
+    <NativeBaseProvider>
+      <AuthProvider>
+        <PetsProvider>{children}</PetsProvider>
+      </AuthProvider>
+    </NativeBaseProvider>
   );
 };

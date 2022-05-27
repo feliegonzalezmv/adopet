@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import COLORS from '../../const/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import pets from '../../const/pets';
 import {useAuth} from '../../context';
 import {usePets} from '../../context/PetsContext/usePets';
+import {Loader} from '../../components';
 const {height} = Dimensions.get('window');
 const petCategories = [
   {name: 'CAT', icon: 'cat'},
@@ -33,7 +33,7 @@ const Card = ({pet, navigation}) => {
         {/* Render the card image */}
         <View style={style.cardImageContainer}>
           <Image
-            source={pet.image}
+            source={{uri: pet.image}}
             style={{
               width: '100%',
               height: '100%',
@@ -81,95 +81,105 @@ const HomeScreen = ({navigation}) => {
   const {getPets, pets, loader} = usePets();
 
   const fliterPet = category => {
-    console.log('category', category);
     const currentPets = pets.filter(
       pet => pet.specie.toUpperCase() === category,
     );
     setFilteredPets(currentPets);
-
-    console.log('currentPets', currentPets);
   };
 
   React.useEffect(() => {
-    fliterPet(petCategories[0].name);
     getPets();
   }, []);
 
+  React.useEffect(() => {
+    fliterPet(petCategories[selectedCategoryIndex].name);
+  }, [pets]);
+
   return (
     <SafeAreaView style={{flex: 1, color: COLORS.white}}>
-      <View style={style.header}>
-        <Icon name="sort-variant" size={28} onPress={navigation.toggleDrawer} />
-        <Text style={{color: COLORS.primary, fontWeight: 'bold', fontSize: 16}}>
-          {user?.email}
-        </Text>
-        <Image
-          source={require('../../assets/person.jpg')}
-          style={{height: 30, width: 30, borderRadius: 25}}
-        />
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={style.mainContainer}>
-          {/* Render the search inputs and icons */}
-          <View style={style.searchInputContainer}>
-            <Icon name="magnify" size={24} color={COLORS.grey} />
-            <TextInput
-              placeholderTextColor={COLORS.grey}
-              placeholder="Search pet to adopt"
-              style={{flex: 1}}
+      {loader ? (
+        <Loader />
+      ) : (
+        <>
+          <View style={style.header}>
+            <Icon
+              name="sort-variant"
+              size={28}
+              onPress={navigation.toggleDrawer}
             />
-            <Icon name="sort-ascending" size={24} color={COLORS.grey} />
+            <Text
+              style={{color: COLORS.primary, fontWeight: 'bold', fontSize: 16}}>
+              {user?.email}
+            </Text>
+            <Image
+              source={require('../../assets/person.jpg')}
+              style={{height: 30, width: 30, borderRadius: 25}}
+            />
           </View>
-
-          {/* Render all the categories */}
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 20,
-            }}>
-            {petCategories.map((item, index) => (
-              <View key={'pet' + index} style={{alignItems: 'center'}}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setSeletedCategoryIndex(index);
-                    fliterPet(item.name);
-                  }}
-                  style={[
-                    style.categoryBtn,
-                    {
-                      backgroundColor:
-                        selectedCategoryIndex == index
-                          ? COLORS.primary
-                          : COLORS.white,
-                    },
-                  ]}>
-                  <Icon
-                    name={item.icon}
-                    size={30}
-                    color={
-                      selectedCategoryIndex == index
-                        ? COLORS.white
-                        : COLORS.primary
-                    }
-                  />
-                </TouchableOpacity>
-                <Text style={style.categoryBtnName}>{item.name}</Text>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={style.mainContainer}>
+              <View style={style.searchInputContainer}>
+                <Icon name="magnify" size={24} color={COLORS.grey} />
+                <TextInput
+                  placeholderTextColor={COLORS.grey}
+                  placeholder="Search pet to adopt"
+                  style={{flex: 1}}
+                />
+                <Icon name="sort-ascending" size={24} color={COLORS.grey} />
               </View>
-            ))}
-          </View>
 
-          {/* Render the cards with flatlist */}
-          <View style={{marginTop: 20}}>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={filteredPets}
-              renderItem={({item}) => (
-                <Card pet={item} navigation={navigation} />
-              )}
-            />
-          </View>
-        </View>
-      </ScrollView>
+              {/* Render all the categories */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 20,
+                }}>
+                {petCategories.map((item, index) => (
+                  <View key={'pet' + index} style={{alignItems: 'center'}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSeletedCategoryIndex(index);
+                        fliterPet(item.name);
+                      }}
+                      style={[
+                        style.categoryBtn,
+                        {
+                          backgroundColor:
+                            selectedCategoryIndex == index
+                              ? COLORS.primary
+                              : COLORS.white,
+                        },
+                      ]}>
+                      <Icon
+                        name={item.icon}
+                        size={30}
+                        color={
+                          selectedCategoryIndex == index
+                            ? COLORS.white
+                            : COLORS.primary
+                        }
+                      />
+                    </TouchableOpacity>
+                    <Text style={style.categoryBtnName}>{item.name}</Text>
+                  </View>
+                ))}
+              </View>
+
+              {/* Render the cards with flatlist */}
+              <View style={{marginTop: 20}}>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={filteredPets}
+                  renderItem={({item}) => (
+                    <Card pet={item} navigation={navigation} />
+                  )}
+                />
+              </View>
+            </View>
+          </ScrollView>
+        </>
+      )}
     </SafeAreaView>
   );
 };

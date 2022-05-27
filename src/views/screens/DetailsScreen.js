@@ -9,17 +9,27 @@ import {
   StyleSheet,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Button} from 'native-base';
 import COLORS from '../../const/colors';
+import {useAuth} from '../../context';
+import {usePets} from '../../context/PetsContext/usePets';
 
 const DetailsScreen = ({navigation, route}) => {
   const pet = route.params;
+  const {user} = useAuth();
+  const {sendRequestPet, loader} = usePets();
+
+  const sendRequest = async () => {
+    sendRequestPet(pet.id, user.uid);
+  };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <StatusBar backgroundColor={COLORS.background} />
       <View style={{height: 400, backgroundColor: COLORS.background}}>
         <ImageBackground
           resizeMode="contain"
-          source={pet?.image}
+          source={{uri: pet.image}}
           style={{
             height: 280,
             top: 20,
@@ -105,11 +115,9 @@ const DetailsScreen = ({navigation, route}) => {
           <View style={style.iconCon}>
             <Icon name="heart-outline" size={22} color={COLORS.white} />
           </View>
-          <View style={style.btn}>
-            <Text style={{color: COLORS.white, fontWeight: 'bold'}}>
-              ADOPTION
-            </Text>
-          </View>
+          <Button isLoading={loader} style={style.btn} onPress={sendRequest}>
+            Adoption
+          </Button>
         </View>
       </View>
     </SafeAreaView>
